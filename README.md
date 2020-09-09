@@ -1,0 +1,2 @@
+# NetCoreMvc
+Project for practice
