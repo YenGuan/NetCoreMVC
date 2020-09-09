@@ -1,0 +1,12 @@
+[
+  {
+    "outputFile": "css/main.css",
+    "inputFile": "scss/main.scss",
+    "sourceMap": false
+  },
+  {
+    "outputFile": "css/login.css",
+    "inputFile": "scss/login.scss",
+    "sourceMap": false
+  }
+]
