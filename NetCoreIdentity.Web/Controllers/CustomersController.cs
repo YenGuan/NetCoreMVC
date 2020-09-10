@@ -16,12 +16,21 @@ namespace NetCoreIdentity.Web
         private readonly int pageSize;
         private readonly UnitOfWork<EFCoreLabContext> _unitOfWork;
 
+      
+#if UseDbContext
+        public CustomersController(EFCoreLabContext context)
+        {
+            _context = context;
+            pageSize = base._defaultPageSize;
+        }  
+#else
         public CustomersController(EFCoreLabContext context, IUnitOfWork unit)
         {
             _context = context;
             _unitOfWork = (UnitOfWork<EFCoreLabContext>)unit;
             pageSize = base._defaultPageSize;
         }
+#endif
 
         // GET: Customers
         public async Task<IActionResult> Index(string keyword, string sortName, string sortOrder, int? pageNum)
