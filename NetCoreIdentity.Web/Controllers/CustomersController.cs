@@ -14,9 +14,12 @@ namespace NetCoreIdentity.Web
     {
         private readonly EFCoreLabContext _context;
         private readonly int pageSize;
-        public CustomersController(EFCoreLabContext context)
+        private readonly UnitOfWork<EFCoreLabContext> _unitOfWork;
+
+        public CustomersController(EFCoreLabContext context, IUnitOfWork unit)
         {
             _context = context;
+            _unitOfWork = (UnitOfWork<EFCoreLabContext>)unit;
             pageSize = base._defaultPageSize;
         }
 
@@ -28,8 +31,12 @@ namespace NetCoreIdentity.Web
             ViewBag.SortOrder = !string.IsNullOrEmpty(sortOrder) ? sortOrder : "Asc";
             ViewBag.Keyword = keyword;
             pageNum ??= 1;
-
+#if UseDbContext
             var customers = _context.Customer.Select(m => m);
+#else
+            var repo = _unitOfWork.GetRepository<Customer>();
+            var customers = repo.All();
+#endif            
             if (!string.IsNullOrEmpty(keyword))
             {
                 customers = customers.Where(m =>
@@ -57,9 +64,14 @@ namespace NetCoreIdentity.Web
             {
                 return NotFound();
             }
-
+#if UseDbContext
             var customer = await _context.Customer
                 .FirstOrDefaultAsync(m => m.CustomerId == id);
+#else
+            var repo = _unitOfWork.GetRepository<Customer>();
+            var customer = repo.FirstOrDefaultAsync(m => m.CustomerId == id);
+#endif
+
             if (customer == null)
             {
                 return NotFound();
@@ -83,8 +95,13 @@ namespace NetCoreIdentity.Web
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+#if UseDbContext
+                 _context.Add(customer);
+                await _context.SaveChangesAsync(); 
+#else
+                await _unitOfWork.GetRepository<Customer>().CreateAsync(customer);
+#endif
+
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
@@ -97,8 +114,12 @@ namespace NetCoreIdentity.Web
             {
                 return NotFound();
             }
-
+#if UseDbContext
             var customer = await _context.Customer.FindAsync(id);
+#else
+            var customer = await _unitOfWork.GetRepository<Customer>().FindAsync(id);
+#endif
+
             if (customer == null)
             {
                 return NotFound();
@@ -122,8 +143,13 @@ namespace NetCoreIdentity.Web
             {
                 try
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+#if UseDbContext
+                 _context.Update(customer);
+                 await _context.SaveChangesAsync();
+#else
+                    await _unitOfWork.GetRepository<Customer>().UpdateAsync(customer);
+#endif
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -148,9 +174,13 @@ namespace NetCoreIdentity.Web
             {
                 return NotFound();
             }
-
+#if UseDbContext
             var customer = await _context.Customer
                 .FirstOrDefaultAsync(m => m.CustomerId == id);
+#else
+            var customer = await _unitOfWork.GetRepository<Customer>().FirstOrDefaultAsync(m => m.CustomerId == id);
+#endif
+
             if (customer == null)
             {
                 return NotFound();
@@ -164,9 +194,17 @@ namespace NetCoreIdentity.Web
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customer.FindAsync(id);
+#if UseDbContext
+             var customer = await _context.Customer.FindAsync(id);
             _context.Customer.Remove(customer);
             await _context.SaveChangesAsync();
+#else
+            var repo = _unitOfWork.GetRepository<Customer>();
+            var customer = await repo.FindAsync(id);
+            await repo.DeleteAsync(customer);
+
+#endif
+
             return RedirectToAction(nameof(Index));
         }
 

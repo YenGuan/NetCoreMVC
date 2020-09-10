@@ -1,4 +1,4 @@
-#define useDbContext
+#define useDbContext 
 
 using System;
 using System.Collections.Generic;
@@ -27,8 +27,14 @@ namespace NetCoreIdentity.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+#if UseDbContext
             services.AddDbContext<EFCoreLabContext>(options =>
-                  options.UseSqlServer(Configuration.GetConnectionString("EFCoreLabContext")));
+                       options.UseSqlServer(Configuration.GetConnectionString("EFCoreLabContext")));
+#else
+            services.AddDbContext<EFCoreLabContext>(options =>
+                       options.UseSqlServer(Configuration.GetConnectionString("EFCoreLabContext"))).AddUnitOfWork<EFCoreLabContext>();
+#endif
+
             services.AddControllersWithViews();
         }
 

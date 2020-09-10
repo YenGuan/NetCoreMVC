@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+	<!--<DefineConstants>UseDbContext</DefineConstants>-->
+	  <DefineConstants>UseRepository</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

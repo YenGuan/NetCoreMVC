@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage;
+using NetCoreIdentity.Model.Data.EntityTypeConfigurations;
 
 namespace NetCoreIdentity.Model
 {
@@ -29,53 +31,35 @@ namespace NetCoreIdentity.Model
         public virtual DbSet<VProductAndDescription> VProductAndDescription { get; set; }
         public virtual DbSet<VProductModelCatalogDescription> VProductModelCatalogDescription { get; set; }
 
+        private IDbContextTransaction _transaction;
+
+        public void BeginTransaction()
+        {
+            _transaction = Database.BeginTransaction();
+        }
+
+        public void Commit()
+        {
+            try
+            {
+                SaveChanges();
+                _transaction.Commit();
+            }
+            finally
+            {
+                _transaction.Dispose();
+            }
+        }
+
+        public void Rollback()
+        {
+            _transaction.Rollback();
+            _transaction.Dispose();
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Address>(entity =>
-            {
-                entity.ToTable("Address", "SalesLT");
-
-                entity.HasIndex(e => e.Rowguid)
-                    .HasName("AK_Address_rowguid")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.StateProvince);
-
-                entity.HasIndex(e => new { e.AddressLine1, e.AddressLine2, e.City, e.StateProvince, e.PostalCode, e.CountryRegion });
-
-                entity.Property(e => e.AddressId).HasColumnName("AddressID");
-
-                entity.Property(e => e.AddressLine1)
-                    .IsRequired()
-                    .HasMaxLength(60);
-
-                entity.Property(e => e.AddressLine2).HasMaxLength(60);
-
-                entity.Property(e => e.City)
-                    .IsRequired()
-                    .HasMaxLength(30);
-
-                entity.Property(e => e.CountryRegion)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.ModifiedDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.PostalCode)
-                    .IsRequired()
-                    .HasMaxLength(15);
-
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("(newid())");
-
-                entity.Property(e => e.StateProvince)
-                    .IsRequired()
-                    .HasMaxLength(50);
-            });
-
+            modelBuilder.ApplyConfiguration(new AddressConfiguration());
+            
             modelBuilder.Entity<Customer>(entity =>
             {
                 entity.ToTable("Customer", "SalesLT");
