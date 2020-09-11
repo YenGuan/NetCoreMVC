@@ -365,7 +365,7 @@ a {
     position: absolute;
     height: 30px;
     line-height: 30px;
-    top: 50%;
+    top: 25px;
     right: 10px;
     transform: translateY(-50%); }
     .header .logout i {

@@ -78,10 +78,12 @@
                     </span>
 
                 </div>
-                <div class="user">
-                    @*使用者:Admin*@
+                <!--<div class="user">
+                    使用者:Admin
                 </div>
-                <a class="logout" href="@Url.Action("Index","Login")"><i class="lni-power-switch"></i>@*登出*@</a>
+                <a class="logout" href="@Url.Action("Index","Login")"><i class="lni-power-switch"></i>-->
+                @*登出*@<!--</a>-->
+                <partial name="_LoginPartial" />
             </div>
             @RenderBody()
         </div>

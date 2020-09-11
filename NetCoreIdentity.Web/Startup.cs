@@ -30,6 +30,7 @@ namespace NetCoreIdentity.Web
             services.AddDbContext<EFCoreLabContext>(options =>
                   options.UseSqlServer(Configuration.GetConnectionString("EFCoreLabContext")));
             services.AddControllersWithViews();
+     
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +50,7 @@ namespace NetCoreIdentity.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -57,6 +58,7 @@ namespace NetCoreIdentity.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
