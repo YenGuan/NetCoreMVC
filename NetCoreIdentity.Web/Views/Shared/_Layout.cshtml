@@ -1,5 +1,9 @@
 ﻿@using NetCoreIdentity.Web.Helpers
+@using Microsoft.AspNetCore.Identity
+@using NetCoreIdentity.Web.Areas.Identity.Data
 
+@inject SignInManager<NetCoreIdentityUser> SignInManager
+@inject UserManager<NetCoreIdentityUser> UserManager
 <!DOCTYPE html>
 
 <html>
@@ -78,10 +82,12 @@
                     </span>
 
                 </div>
-                <div class="user">
-                    @*使用者:Admin*@
+                <!--<div class="user">
+                    使用者:Admin
                 </div>
-                <a class="logout" href="@Url.Action("Index","Login")"><i class="lni-power-switch"></i>@*登出*@</a>
+                <a class="logout" href="@Url.Action("Index","Login")"><i class="lni-power-switch"></i>-->
+                @*登出*@<!--</a>-->
+                <partial name="_LoginPartial" />
             </div>
             @RenderBody()
         </div>

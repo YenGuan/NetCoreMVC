@@ -43,6 +43,10 @@ namespace NetCoreIdentity.Web.Helpers
 
 
             RouteValueDictionary routeValues = viewContext.RouteData.Values;
+            if (routeValues["controller"] == null)
+            {
+                return string.Empty;
+            }
             string currentController = routeValues["controller"].ToString();
 
 

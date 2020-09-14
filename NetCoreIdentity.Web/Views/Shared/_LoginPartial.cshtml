@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using NetCoreIdentity.Web.Areas.Identity.Data
+
+@inject SignInManager<NetCoreIdentityUser> SignInManager
+@inject UserManager<NetCoreIdentityUser> UserManager
+
+<div class="user">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <a id="manage" class="user" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
+        <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <a class="logout" onclick="$('#logoutForm').submit();"><i class="lni-power-switch"></i>Logout</a>
+        </form>
+    }
+    else
+    {
+        <a id="register" class="user" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="logout" id="login" asp-area="Identity" asp-page="/Account/Login"><i class="lni-power-switch"></i>Login</a>
+    }
+
+</div>

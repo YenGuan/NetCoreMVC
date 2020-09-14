@@ -5,84 +5,93 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Customer</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<div class="page-content">
+    <div class="form-block">
+        <div class="block-title">
+            Create a Customer
+        </div>
+        <form id="customerform" asp-action="Create" class="form-type-01 row">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="NameStyle" /> @Html.DisplayNameFor(model => model.NameStyle)
-                </label>
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.NameStyle)
+                </span>
+                <input asp-for="NameStyle" />
             </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.Title)
+                </span>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </span>
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="MiddleName" class="control-label"></label>
-                <input asp-for="MiddleName" class="form-control" />
-                <span asp-validation-for="MiddleName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.LastName)
+                </span>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Suffix" class="control-label"></label>
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.Suffix)
+                </span>
                 <input asp-for="Suffix" class="form-control" />
                 <span asp-validation-for="Suffix" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CompanyName" class="control-label"></label>
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.CompanyName)
+                </span>
                 <input asp-for="CompanyName" class="form-control" />
                 <span asp-validation-for="CompanyName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="SalesPerson" class="control-label"></label>
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.SalesPerson)
+                </span>
                 <input asp-for="SalesPerson" class="form-control" />
                 <span asp-validation-for="SalesPerson" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="EmailAddress" class="control-label"></label>
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.EmailAddress)
+                </span>
                 <input asp-for="EmailAddress" class="form-control" />
                 <span asp-validation-for="EmailAddress" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.Phone)
+                </span>
                 <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PasswordHash" class="control-label"></label>
-                <input asp-for="PasswordHash" class="form-control" />
-                <span asp-validation-for="PasswordHash" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PasswordSalt" class="control-label"></label>
-                <input asp-for="PasswordSalt" class="form-control" />
-                <span asp-validation-for="PasswordSalt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.Phone)
+                </span>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
         </form>
     </div>
+   
+    <div class="form-block">
+        <div class="col-sm-12 col-md-12">
+            <a class="btn btn-01" onclick="$('#customerform').submit();">Submit</a>
+            <a class="btn btn-04" href="@Url.Action("Index")">Back</a>
+        </div>
+    </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+ 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
