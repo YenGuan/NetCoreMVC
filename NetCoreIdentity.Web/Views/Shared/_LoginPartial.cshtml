@@ -3,39 +3,19 @@
 
 @inject SignInManager<NetCoreIdentityUser> SignInManager
 @inject UserManager<NetCoreIdentityUser> UserManager
-@*<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-        </li>
-        <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
-    }
-    </ul>*@
+
 <div class="user">
     @if (SignInManager.IsSignedIn(User))
     {
-        <a id="manage"  class="user" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-        <form id="logoutForm" class="logout" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        <a id="manage" class="user" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
+        <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <a class="logout" onclick="$('#logoutForm').submit();"><i class="lni-power-switch"></i>Logout</a>
         </form>
     }
     else
     {
-        <a  id="register"  class="user" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a id="register" class="user" asp-area="Identity" asp-page="/Account/Register">Register</a>
         <a class="logout" id="login" asp-area="Identity" asp-page="/Account/Login"><i class="lni-power-switch"></i>Login</a>
     }
+
 </div>

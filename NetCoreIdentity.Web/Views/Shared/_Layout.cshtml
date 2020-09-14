@@ -1,5 +1,9 @@
 ﻿@using NetCoreIdentity.Web.Helpers
+@using Microsoft.AspNetCore.Identity
+@using NetCoreIdentity.Web.Areas.Identity.Data
 
+@inject SignInManager<NetCoreIdentityUser> SignInManager
+@inject UserManager<NetCoreIdentityUser> UserManager
 <!DOCTYPE html>
 
 <html>
