@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,11 @@ namespace NetCoreIdentity.Web.Areas.Identity.Data.EntityTypeConfigurations
 {
     public class IdentityUserConfiguration : IEntityTypeConfiguration<NetCoreIdentityUser>
     {
+        private readonly string _adminUserId;
+        public IdentityUserConfiguration(string adminUserId)
+        {
+            _adminUserId = adminUserId;
+        }
         public void Configure(EntityTypeBuilder<NetCoreIdentityUser> builder)
         {
             // Rename table
@@ -36,6 +42,22 @@ namespace NetCoreIdentity.Web.Areas.Identity.Data.EntityTypeConfigurations
                 .WithOne(e => e.User)
                 .HasForeignKey(ur => ur.UserId)
                 .IsRequired();
+            var hasher = new PasswordHasher<NetCoreIdentityUser>();
+
+            builder.HasData( new NetCoreIdentityUser() 
+            {
+                Id = _adminUserId, 
+                UserName = "crusade771022@hotmail.com",
+                NormalizedUserName = "Administrator",
+                Email = "crusade771022@hotmail.com",
+                NormalizedEmail = "CRUSADE771022@HOTMAIL.COM",
+                EmailConfirmed = true               
+             
+            });
+
+            
+
+
         }
     }
 }

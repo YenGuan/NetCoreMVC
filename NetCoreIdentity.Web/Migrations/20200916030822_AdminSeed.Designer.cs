@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetCoreIdentity.Web;
 
 namespace NetCoreIdentity.Web.Migrations
 {
     [DbContext(typeof(NetCoreIdentityContext))]
-    partial class NetCoreIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20200916030822_AdminSeed")]
+    partial class AdminSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

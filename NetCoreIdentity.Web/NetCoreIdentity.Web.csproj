@@ -8,6 +8,37 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200915071324_Seed.cs" />
+    <Compile Remove="Migrations\20200915071324_Seed.Designer.cs" />
+    <Compile Remove="Migrations\20200915071424_SeedAgain.cs" />
+    <Compile Remove="Migrations\20200915071424_SeedAgain.Designer.cs" />
+    <Compile Remove="Migrations\20200915072717_AdminSeedAgain.cs" />
+    <Compile Remove="Migrations\20200915072717_AdminSeedAgain.Designer.cs" />
+    <Compile Remove="Migrations\20200915074037_Admin.cs" />
+    <Compile Remove="Migrations\20200915074037_Admin.Designer.cs" />
+    <Compile Remove="Migrations\20200915074931_AdminSeed.cs" />
+    <Compile Remove="Migrations\20200915074931_AdminSeed.Designer.cs" />
+    <Compile Remove="Migrations\20200915075015_AdminAgain.cs" />
+    <Compile Remove="Migrations\20200915075015_AdminAgain.Designer.cs" />
+    <Compile Remove="Migrations\20200915082017_AdminSeed.cs" />
+    <Compile Remove="Migrations\20200915082017_AdminSeed.Designer.cs" />
+    <Compile Remove="Migrations\20200915082656_Addadmin.cs" />
+    <Compile Remove="Migrations\20200915082656_Addadmin.Designer.cs" />
+    <Compile Remove="Migrations\20200915084050_AdminSeed.cs" />
+    <Compile Remove="Migrations\20200915084050_AdminSeed.Designer.cs" />
+    <Compile Remove="Migrations\20200915084851_AdminSeed.cs" />
+    <Compile Remove="Migrations\20200915084851_AdminSeed.Designer.cs" />
+    <Compile Remove="Migrations\20200915094010_AdminSeed.cs" />
+    <Compile Remove="Migrations\20200915094010_AdminSeed.Designer.cs" />
+    <Compile Remove="Migrations\20200916015701_Seed admin.cs" />
+    <Compile Remove="Migrations\20200916015701_Seed admin.Designer.cs" />
+    <Compile Remove="Migrations\20200916020036_AdminSeed.cs" />
+    <Compile Remove="Migrations\20200916020036_AdminSeed.Designer.cs" />
+    <Compile Remove="Migrations\20200916030505_AdminSeed.cs" />
+    <Compile Remove="Migrations\20200916030505_AdminSeed.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
 
