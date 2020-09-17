@@ -10,11 +10,6 @@ namespace NetCoreIdentity.Web.Areas.Identity.Data.EntityTypeConfigurations
 {
     public class IdentityRoleConfiguration : IEntityTypeConfiguration<NetCoreIdentityRole>
     {
-        private readonly string _adminRoleId;
-        public IdentityRoleConfiguration(string adminRoleId)
-        {
-            _adminRoleId = adminRoleId;
-        }
         public void Configure(EntityTypeBuilder<NetCoreIdentityRole> builder)
         {
             // Rename table
@@ -26,9 +21,6 @@ namespace NetCoreIdentity.Web.Areas.Identity.Data.EntityTypeConfigurations
                     .HasForeignKey(ur => ur.RoleId)
                     .IsRequired();
 
-            builder.HasData(
-                    new NetCoreIdentityRole() { Id = _adminRoleId, Name = "Admin", NormalizedName = "Administrator" }
-                );
         }
     }
 }

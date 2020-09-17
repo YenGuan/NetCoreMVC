@@ -21,10 +21,8 @@ namespace NetCoreIdentity.Web.Areas.Identity
                         context.Configuration.GetConnectionString("NetCoreIdentityContextConnection")));
 
                 services.AddDefaultIdentity<NetCoreIdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddRoles<NetCoreIdentityRole>()
                     .AddEntityFrameworkStores<NetCoreIdentityContext>();
             });
-           
         }
     }
 }
