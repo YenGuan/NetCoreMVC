@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetCoreIdentity.Model;
+using NetCoreIdentity.Web.Areas.Identity;
+using NetCoreIdentity.Web.Areas.Identity.Data;
+using NetCoreIdentity.Web.Services;
 
 namespace NetCoreIdentity.Web
 {
@@ -26,13 +31,10 @@ namespace NetCoreIdentity.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-#if UseDbContext
-            services.AddDbContext<EFCoreLabContext>(options =>
-                       options.UseSqlServer(Configuration.GetConnectionString("EFCoreLabContext")));
-#else
+ 
             services.AddDbContext<EFCoreLabContext>(options =>
                        options.UseSqlServer(Configuration.GetConnectionString("EFCoreLabContext"))).AddUnitOfWork<EFCoreLabContext>();
-#endif
+ 
             //services.AddAuthorization(options =>
             //{
             //    options.AddPolicy("RequireAdministratorRole",
@@ -41,11 +43,15 @@ namespace NetCoreIdentity.Web
             //宣告 AJAX POST 使用的 Header 名稱
             services.AddControllersWithViews();
             services.AddAntiforgery(o => o.HeaderName = "X-CSRF-TOKEN");
-          
+            // requires
+            // using Microsoft.AspNetCore.Identity.UI.Services;
+            // using WebPWrecover.Services;
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<SendgridSenderOptions>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<NetCoreIdentityUser> userManager)
         {
             if (env.IsDevelopment())
             {
@@ -71,6 +77,8 @@ namespace NetCoreIdentity.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            DefaultUserInitializer.SeedData(userManager);
         }
     }
 }
