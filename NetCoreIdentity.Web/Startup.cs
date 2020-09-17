@@ -41,8 +41,10 @@ namespace NetCoreIdentity.Web
             //    options.AddPolicy("RequireAdministratorRole",
             //         policy => policy.RequireRole("Admin"));
             //});
+            //宣告 AJAX POST 使用的 Header 名稱
             services.AddControllersWithViews();
-     
+            services.AddAntiforgery(o => o.HeaderName = "X-CSRF-TOKEN");
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NetCoreIdentity.Model;
+using NetCoreIdentity.Web.Areas.Identity.Data;
 using NetCoreIdentity.Web.Paginations;
 
 namespace NetCoreIdentity.Web
@@ -15,26 +17,16 @@ namespace NetCoreIdentity.Web
     [Authorize]
     public class CustomersController : BaseController
     {
-        private readonly EFCoreLabContext _context;
         private readonly int pageSize;
         private readonly UnitOfWork<EFCoreLabContext> _unitOfWork;
 
-      
-#if UseDbContext
-        public CustomersController(EFCoreLabContext context)
-        {
-            _context = context;
-            pageSize = base._defaultPageSize;
-        }  
-#else
-        public CustomersController(EFCoreLabContext context, IUnitOfWork unit)
-        {
-            _context = context;
+        public CustomersController(IUnitOfWork unit, UserManager<NetCoreIdentityUser> userManager, RoleManager<NetCoreIdentityRole> roleManager)
+           : base(userManager, roleManager)
+        {           
             _unitOfWork = (UnitOfWork<EFCoreLabContext>)unit;
             pageSize = base._defaultPageSize;
         }
-#endif
-
+ 
         // GET: Customers
         public async Task<IActionResult> Index(string keyword, string sortName, string sortOrder, int? pageNum)
         {
@@ -43,12 +35,10 @@ namespace NetCoreIdentity.Web
             ViewBag.SortOrder = !string.IsNullOrEmpty(sortOrder) ? sortOrder : "Asc";
             ViewBag.Keyword = keyword;
             pageNum ??= 1;
-#if UseDbContext
-            var customers = _context.Customer.Select(m => m);
-#else
+ 
             var repo = _unitOfWork.GetRepository<Customer>();
             var customers = repo.All();
-#endif            
+           
             if (!string.IsNullOrEmpty(keyword))
             {
                 customers = customers.Where(m =>
@@ -76,13 +66,9 @@ namespace NetCoreIdentity.Web
             {
                 return NotFound();
             }
-#if UseDbContext
-            var customer = await _context.Customer
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
-#else
+
             var repo = _unitOfWork.GetRepository<Customer>();
-            var customer = repo.FirstOrDefaultAsync(m => m.CustomerId == id);
-#endif
+            var customer = await repo.FirstOrDefaultAsync(m => m.CustomerId == id);
 
             if (customer == null)
             {
@@ -107,13 +93,7 @@ namespace NetCoreIdentity.Web
         {
             if (ModelState.IsValid)
             {
-#if UseDbContext
-                 _context.Add(customer);
-                await _context.SaveChangesAsync(); 
-#else
                 await _unitOfWork.GetRepository<Customer>().CreateAsync(customer);
-#endif
-
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
@@ -126,11 +106,7 @@ namespace NetCoreIdentity.Web
             {
                 return NotFound();
             }
-#if UseDbContext
-            var customer = await _context.Customer.FindAsync(id);
-#else
             var customer = await _unitOfWork.GetRepository<Customer>().FindAsync(id);
-#endif
 
             if (customer == null)
             {
@@ -155,13 +131,7 @@ namespace NetCoreIdentity.Web
             {
                 try
                 {
-#if UseDbContext
-                 _context.Update(customer);
-                 await _context.SaveChangesAsync();
-#else
                     await _unitOfWork.GetRepository<Customer>().UpdateAsync(customer);
-#endif
-
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -186,13 +156,7 @@ namespace NetCoreIdentity.Web
             {
                 return NotFound();
             }
-#if UseDbContext
-            var customer = await _context.Customer
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
-#else
             var customer = await _unitOfWork.GetRepository<Customer>().FirstOrDefaultAsync(m => m.CustomerId == id);
-#endif
-
             if (customer == null)
             {
                 return NotFound();
@@ -206,23 +170,16 @@ namespace NetCoreIdentity.Web
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-#if UseDbContext
-             var customer = await _context.Customer.FindAsync(id);
-            _context.Customer.Remove(customer);
-            await _context.SaveChangesAsync();
-#else
             var repo = _unitOfWork.GetRepository<Customer>();
             var customer = await repo.FindAsync(id);
             await repo.DeleteAsync(customer);
-
-#endif
 
             return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(int id)
         {
-            return _context.Customer.Any(e => e.CustomerId == id);
+            return _unitOfWork.GetRepository<Customer>().All().Any(e => e.CustomerId == id);
         }
     }
 }

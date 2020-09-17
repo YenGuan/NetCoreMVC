@@ -59,11 +59,15 @@
                 </span>
             </a>
             <ul class="sub-menu">
-
                 <li>
-                    <a>
+                    <a asp-controller="Roles" asp-action="Index">
                         <span>
-                            -Authority/Roles
+                            -Roles
+                        </span>
+                    </a>
+                    <a asp-controller="Users" asp-action="Index">
+                        <span>
+                            -Users
                         </span>
                     </a>
                 </li>
@@ -96,84 +100,11 @@
         <span>xxxx© copyright 2019</span>
     </div>
 
-
-    <div id="big-modal-container" class="modal-container modal fade hidden-print" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-            </div>
-        </div>
-    </div>
-    <div id="modal-container" class="modal-container modal fade hidden-print" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-            </div>
-        </div>
-    </div>
-
-    <div id="sub-modal-container" class="modal-container modal fade hidden-print" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-            </div>
-        </div>
-    </div>
+    <partial name="_ModalPartial" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
-    <script>
-
-        $(function () {
-            // boostrap 4 load modal example from docs
-            $('.modal-container').on('show.bs.modal', function (event) {
-
-                var button = $(event.relatedTarget); // Button that triggered the modal
-
-                var url = button.attr("href");
-
-                var modal = $(this);
-
-                // note that this will replace the content of modal-content everytime the modal is opened
-                modal.find('.modal-content').load(url);
-
-            });
-
-            $('.modal-container').on('hidden.bs.modal', function () {
-
-                // remove the bs.modal data attribute from it
-
-                $(this).removeData('bs.modal');
-
-                // and empty the modal-content element
-
-                //$('.modal-container .modal-content').empty();
-
-                $(this).find('.modal-content').empty();
-
-            });
-
-
-            $(".toggle-menu-size-btn").click(function () {
-                $("body").toggleClass("mini-side-menu");
-            })
-        });
-
-        $(".had-sub-menu").click(function () {
-            $(this).toggleClass("active");
-        });
-
-        //Multiple modals overlay z-index fix
-        $(document).on('show.bs.modal', '.modal', function () {
-            var zIndex = 1040 + (10 * $('.modal:visible').length);
-            $(this).css('z-index', zIndex);
-            setTimeout(function () {
-                $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
-            }, 0);
-        });
-
-    </script>
-
+   
 </body>
 </html>

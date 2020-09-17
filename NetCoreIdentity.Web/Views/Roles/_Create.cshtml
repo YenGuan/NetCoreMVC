@@ -1,0 +1,64 @@
+﻿@model NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityRole
+<div class="modal-header">
+    Create Role
+</div>
+
+<div class="modal-body">
+    <div class="form-type-01 row">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(string.Empty, new { @class = "text-danger" })
+        <div class="col-sm-12 col-md-12">
+            <span class="title">
+                @Html.DisplayNameFor(model => model.Name)
+            </span>
+            @Html.TextBoxFor(m => m.Name)
+            @Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
+        </div>
+
+        @*<div class="col-sm-12 col-md-12">
+            <span class="title">
+                @Html.DisplayNameFor(model => model.NormalizedName)
+            </span>
+            @Html.TextBoxFor(m => m.NormalizedName)
+            @Html.ValidationMessageFor(m => m.NormalizedName, null, new { @class = "text-danger" })
+        </div>*@
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-04" data-dismiss="modal">Close</button>
+    <button id="btnRoleCreate" type="submit" class="btn btn-03">Save</button>
+</div>
+<script>
+    $("#btnRoleCreate").click(function () {
+        var formData = new FormData()
+        formData.append("Name", $('#Name').val());
+        formData.append("NormalizedName", $('#NormalizedName').val());
+        $.ajax({
+            method: "post",
+            url: '@Url.Action("Create")',
+            contentType: false,
+            processData: false,
+            data: formData,
+
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("X-CSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            success: function (response) {
+                if (isHTML(response)) {
+                    var modalcontent = $('#modal-container').find('.modal-content');
+                    modalcontent.empty();
+                    modalcontent.html(response);
+                }
+                else {
+                    window.location = response;
+                }
+            },
+            error: function (xhr, status, err) {
+                console.log(err);
+            }
+        });
+    });
+
+</script>
