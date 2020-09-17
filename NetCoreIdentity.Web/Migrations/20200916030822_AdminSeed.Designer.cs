@@ -10,8 +10,8 @@ using NetCoreIdentity.Web;
 namespace NetCoreIdentity.Web.Migrations
 {
     [DbContext(typeof(NetCoreIdentityContext))]
-    [Migration("20200911041227_InitIdentity")]
-    partial class InitIdentity
+    [Migration("20200916030822_AdminSeed")]
+    partial class AdminSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,33 +20,6 @@ namespace NetCoreIdentity.Web.Migrations
                 .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -120,21 +93,6 @@ namespace NetCoreIdentity.Web.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
@@ -154,6 +112,42 @@ namespace NetCoreIdentity.Web.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("NetCoreRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "8abac3f2-0b6f-4c77-83a8-428c93d429e7",
+                            ConcurrencyStamp = "dc6a7353-50fd-4d6e-8f50-1d2f53d58e52",
+                            Name = "Admin",
+                            NormalizedName = "Administrator"
+                        });
                 });
 
             modelBuilder.Entity("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityUser", b =>
@@ -218,12 +212,51 @@ namespace NetCoreIdentity.Web.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("NetCoreUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c728ce77-d2b1-418f-9fb8-a7c1e1dba663",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "afed879b-f341-4dcc-a912-65d9823a6601",
+                            Email = "crusade771022@hotmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "CRUSADE771022@HOTMAIL.COM",
+                            NormalizedUserName = "Administrator",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "fae0f18e-a311-4426-a36a-680c902216c3",
+                            TwoFactorEnabled = false,
+                            UserName = "crusade771022@hotmail.com"
+                        });
+                });
+
+            modelBuilder.Entity("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityUserRole", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("NetCoreUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "c728ce77-d2b1-418f-9fb8-a7c1e1dba663",
+                            RoleId = "8abac3f2-0b6f-4c77-83a8-428c93d429e7"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -233,7 +266,7 @@ namespace NetCoreIdentity.Web.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityUser", null)
-                        .WithMany()
+                        .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -242,22 +275,7 @@ namespace NetCoreIdentity.Web.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.HasOne("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityUser", null)
-                        .WithMany()
+                        .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -266,7 +284,22 @@ namespace NetCoreIdentity.Web.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.HasOne("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityUser", null)
-                        .WithMany()
+                        .WithMany("Tokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityUserRole", b =>
+                {
+                    b.HasOne("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityRole", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityUser", "User")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

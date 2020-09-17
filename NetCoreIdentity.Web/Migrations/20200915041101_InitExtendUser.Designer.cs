@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetCoreIdentity.Web;
 
 namespace NetCoreIdentity.Web.Migrations
 {
     [DbContext(typeof(NetCoreIdentityContext))]
-    partial class NetCoreIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20200915041101_InitExtendUser")]
+    partial class InitExtendUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,15 +139,6 @@ namespace NetCoreIdentity.Web.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("NetCoreRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "8abac3f2-0b6f-4c77-83a8-428c93d429e7",
-                            ConcurrencyStamp = "dc6a7353-50fd-4d6e-8f50-1d2f53d58e52",
-                            Name = "Admin",
-                            NormalizedName = "Administrator"
-                        });
                 });
 
             modelBuilder.Entity("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityUser", b =>
@@ -211,23 +204,6 @@ namespace NetCoreIdentity.Web.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("NetCoreUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "c728ce77-d2b1-418f-9fb8-a7c1e1dba663",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "afed879b-f341-4dcc-a912-65d9823a6601",
-                            Email = "crusade771022@hotmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "CRUSADE771022@HOTMAIL.COM",
-                            NormalizedUserName = "Administrator",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "fae0f18e-a311-4426-a36a-680c902216c3",
-                            TwoFactorEnabled = false,
-                            UserName = "crusade771022@hotmail.com"
-                        });
                 });
 
             modelBuilder.Entity("NetCoreIdentity.Web.Areas.Identity.Data.NetCoreIdentityUserRole", b =>
@@ -243,13 +219,6 @@ namespace NetCoreIdentity.Web.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("NetCoreUserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "c728ce77-d2b1-418f-9fb8-a7c1e1dba663",
-                            RoleId = "8abac3f2-0b6f-4c77-83a8-428c93d429e7"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
