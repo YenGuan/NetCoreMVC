@@ -3,19 +3,21 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetCoreIdentity.Web;
 
 namespace NetCoreIdentity.Web.Migrations
 {
     [DbContext(typeof(NetCoreIdentityContext))]
-    partial class NetCoreIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20200922091547_Appfunction")]
+    partial class Appfunction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -184,7 +186,7 @@ namespace NetCoreIdentity.Web.Migrations
                         new
                         {
                             Id = "8abac3f2-0b6f-4c77-83a8-428c93d429e7",
-                            ConcurrencyStamp = "2b69e88f-b6f1-42fe-ab73-3811e6e09153",
+                            ConcurrencyStamp = "ffc2f5cb-9fa0-4c8f-86fc-17577448b25e",
                             Name = "Admin",
                             NormalizedName = "Administrator"
                         });
@@ -259,14 +261,14 @@ namespace NetCoreIdentity.Web.Migrations
                         {
                             Id = "c728ce77-d2b1-418f-9fb8-a7c1e1dba663",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e988653f-41d3-4c3c-94ab-129c46c21031",
+                            ConcurrencyStamp = "a2e90c2f-7d7c-4ba5-9dde-761961c9381c",
                             Email = "crusade771022@hotmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "CRUSADE771022@HOTMAIL.COM",
                             NormalizedUserName = "Administrator",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cfb0380d-6dce-4aea-988f-80a2ab3ae3b4",
+                            SecurityStamp = "f5bfdfd4-29f0-430c-af53-16a03c825844",
                             TwoFactorEnabled = false,
                             UserName = "crusade771022@hotmail.com"
                         });

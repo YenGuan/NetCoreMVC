@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "EFCoreLabContext"
+    },
     "mssql1": {
       "type": "mssql",
       "connectionId": "NetCoreIdentityContextConnection"

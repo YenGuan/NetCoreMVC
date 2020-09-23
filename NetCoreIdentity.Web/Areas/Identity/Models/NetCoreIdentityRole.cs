@@ -9,6 +9,13 @@ namespace NetCoreIdentity.Web.Areas.Identity.Data
     // Add profile data for application users by adding properties to the NetCoreIdentityUser class
     public class NetCoreIdentityRole : IdentityRole
     {
+        public NetCoreIdentityRole()
+        {
+            UserRoles = new HashSet<NetCoreIdentityUserRole>();
+            FunctionRoles = new HashSet<FunctionRole>();
+        }
         public virtual ICollection<NetCoreIdentityUserRole> UserRoles { get; set; }
+
+        public virtual ICollection<FunctionRole> FunctionRoles { get; set; }
     }
 }

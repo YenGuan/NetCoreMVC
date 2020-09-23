@@ -19,7 +19,8 @@ namespace NetCoreIdentity.Web
         {
             Configuration = configuration;
         }
-       
+        public virtual DbSet<AppFunction> AppFunction { get; set; }
+        public virtual DbSet<FunctionRole> FunctionRole { get; set; }
         public IConfiguration Configuration { get; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -34,7 +35,8 @@ namespace NetCoreIdentity.Web
             builder.ApplyConfiguration(new IdentityUserConfiguration(adminUserId));
             builder.ApplyConfiguration(new IdentityRoleConfiguration(adminRoleId));
             builder.ApplyConfiguration(new IdentityUserRoleConfiguration(adminUserId, adminRoleId));
-            
+            builder.ApplyConfiguration(new AppFunctionConfiguration());
+            builder.ApplyConfiguration(new FunctionRoleConfiguration());
         }
     }
 }

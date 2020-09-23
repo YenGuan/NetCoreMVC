@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -31,10 +33,18 @@ namespace NetCoreIdentity.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
- 
+            // for nginx;
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+            });
+
             services.AddDbContext<EFCoreLabContext>(options =>
                        options.UseSqlServer(Configuration.GetConnectionString("EFCoreLabContext"))).AddUnitOfWork<EFCoreLabContext>();
- 
+            services.AddDbContext<NetCoreIdentityContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("NetCoreIdentityContextConnection"))).AddUnitOfWork<NetCoreIdentityContext>();
+
             //services.AddAuthorization(options =>
             //{
             //    options.AddPolicy("RequireAdministratorRole",
@@ -67,6 +77,11 @@ namespace NetCoreIdentity.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+            // for nginx;
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             app.UseAuthentication();
             app.UseAuthorization();
 

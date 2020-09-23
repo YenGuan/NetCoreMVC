@@ -1,4 +1,4 @@
-﻿@model NetCoreIdentity.Model.Customer
+﻿@model NetCoreIdentity.Web.Areas.Identity.Data.AppFunction
 
 @{
     ViewData["Title"] = "Edit";
@@ -8,92 +8,46 @@
 <div class="page-content">
     <div class="form-block">
         <div class="block-title">
-            Editing Customer
+            Editing AppFunction @Html.DisplayFor(m=>m.AppFunctionName)
         </div>
-        <form id="customerform" asp-action="Edit" class="form-type-01 row">
+        <form id="appfuncform" asp-action="Edit" class="form-type-01 row">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CustomerId" />
+            <input type="hidden" asp-for="AppFunctionId" />
             <div class="col-sm-12 col-md-12">
                 <span class="title">
-                    @Html.DisplayNameFor(model => model.NameStyle)
+                    @Html.DisplayNameFor(model => model.AppFunctionName)
                 </span>
-                <input asp-for="NameStyle" />
+                <input asp-for="AppFunctionName" class="form-control" />
+                <span asp-validation-for="AppFunctionName" class="text-danger"></span>
             </div>
             <div class="col-sm-12 col-md-12">
                 <span class="title">
-                    @Html.DisplayNameFor(model => model.Title)
+                    @Html.DisplayNameFor(model => model.SchemaName)
                 </span>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <input asp-for="SchemaName" class="form-control" />
+                <span asp-validation-for="SchemaName" class="text-danger"></span>
             </div>
             <div class="col-sm-12 col-md-12">
                 <span class="title">
-                    @Html.DisplayNameFor(model => model.FirstName)
+                    @Html.DisplayNameFor(model => model.ControllerName)
                 </span>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <input asp-for="ControllerName" class="form-control" />
+                <span asp-validation-for="ControllerName" class="text-danger"></span>
             </div>
-            <div class="col-sm-12 col-md-12">
-                <span class="title">
-                    @Html.DisplayNameFor(model => model.LastName)
-                </span>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="col-sm-12 col-md-12">
-                <span class="title">
-                    @Html.DisplayNameFor(model => model.Suffix)
-                </span>
-                <input asp-for="Suffix" class="form-control" />
-                <span asp-validation-for="Suffix" class="text-danger"></span>
-            </div>
-            <div class="col-sm-12 col-md-12">
-                <span class="title">
-                    @Html.DisplayNameFor(model => model.CompanyName)
-                </span>
-                <input asp-for="CompanyName" class="form-control" />
-                <span asp-validation-for="CompanyName" class="text-danger"></span>
-            </div>
-            <div class="col-sm-12 col-md-12">
-                <span class="title">
-                    @Html.DisplayNameFor(model => model.SalesPerson)
-                </span>
-                <input asp-for="SalesPerson" class="form-control" />
-                <span asp-validation-for="SalesPerson" class="text-danger"></span>
-            </div>
-            <div class="col-sm-12 col-md-12">
-                <span class="title">
-                    @Html.DisplayNameFor(model => model.EmailAddress)
-                </span>
-                <input asp-for="EmailAddress" class="form-control" />
-                <span asp-validation-for="EmailAddress" class="text-danger"></span>
-            </div>
-            <div class="col-sm-12 col-md-12">
-                <span class="title">
-                    @Html.DisplayNameFor(model => model.Phone)
-                </span>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="col-sm-12 col-md-12">
-                <span class="title">
-                    @Html.DisplayNameFor(model => model.Phone)
-                </span>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
+
         </form>
     </div>
 
     <div class="form-block">
         <div class="col-sm-12 col-md-12">
-            <a class="btn btn-01" onclick="$('#customerform').submit();">Submit</a>
+            <a class="btn btn-01" onclick="$('#appfuncform').submit();">Save</a>
             <a class="btn btn-04" href="@Url.Action("Index")">Back</a>
         </div>
     </div>
 </div>
-@*<hr />
-<div class="row">
+
+ 
+@*<div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -174,10 +128,7 @@
         </form>
     </div>
 </div>*@
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+ 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

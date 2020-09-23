@@ -1,0 +1,52 @@
+﻿@model NetCoreIdentity.Web.Areas.Identity.Data.AppFunction
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content">
+    <div class="form-block">
+        <div class="block-title">
+            Create a AppFunction
+        </div>
+        <form id="appfuncform" asp-action="Create" class="form-type-01 row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.AppFunctionName)
+                </span>
+                <input asp-for="AppFunctionName" class="form-control" />
+                <span asp-validation-for="AppFunctionName" class="text-danger"></span>
+            </div>
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.SchemaName)
+                </span>
+                <input asp-for="SchemaName" class="form-control" />
+                <span asp-validation-for="SchemaName" class="text-danger"></span>
+            </div>
+            <div class="col-sm-12 col-md-12">
+                <span class="title">
+                    @Html.DisplayNameFor(model => model.ControllerName)
+                </span>
+                <input asp-for="ControllerName" class="form-control" />
+                <span asp-validation-for="ControllerName" class="text-danger"></span>
+            </div>
+            
+        </form>
+    </div>
+   
+    <div class="form-block">
+        <div class="col-sm-12 col-md-12">
+            <a class="btn btn-01" onclick="$('#appfuncform').submit();">Submit</a>
+            <a class="btn btn-04" href="@Url.Action("Index")">Back</a>
+        </div>
+    </div>
+</div>
+ 
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

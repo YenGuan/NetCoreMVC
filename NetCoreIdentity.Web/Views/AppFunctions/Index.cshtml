@@ -1,0 +1,94 @@
+﻿@using NetCoreIdentity.Web.Paginations
+@model PaginatedList<NetCoreIdentity.Web.Areas.Identity.Data.AppFunction>
+
+@{
+    ViewData["Title"] = "AppFunctions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-content">
+    <form class="filter-block" asp-action="Index" method="get">
+
+        <div class="filter-field">
+            <span class="title">Find</span>
+            <input type="text" name="Keyword" value="@ViewBag.Keyword" placeholder="text keyword here" />
+        </div>
+        <div class="filter-field" style="vertical-align:bottom">
+            <button class="btn btn-03"><i class="lni-search"></i></button>
+        </div>
+
+    </form>
+
+    <div class="table-wrap">
+        <p>
+            <a asp-action="Create" class="btn btn-03 add-btn">Create</a>
+        </p>
+
+        <table class="footable">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().AppFunctionName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().SchemaName)
+                    </th>
+                    <th>
+                        <a asp-action="Index"
+                           asp-route-sortName="ControllerName"
+                           asp-route-sortOrder="@(ViewBag.SortOrder == "Asc" ? "Desc" : "Asc")"
+                           asp-route-pageNum="@(Model.PageIndex)"
+                           asp-route-keyword="@ViewBag.Keyword">
+                            @Html.DisplayNameFor(model => model.First().ControllerName)
+                        </a>
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AppFunctionName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SchemaName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ControllerName)
+                        </td>
+                       
+                        <td>
+                            <a class="btn btn-03" asp-action="Edit" asp-route-id="@item.AppFunctionId">Edit</a>
+                            <a class="btn btn-07" asp-action="Details" asp-route-id="@item.AppFunctionId">Details</a>
+                            <a class="btn btn-02" asp-action="Delete" asp-route-id="@item.AppFunctionId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+
+        <a asp-action="Index"
+           asp-route-sortName="@ViewBag.SortName"
+           asp-route-sortOrder="@ViewBag.SortOrder"
+           asp-route-pageNum="@(Model.PageIndex - 1)"
+           asp-route-keyword="@ViewBag.Keyword"
+           class="btn btn-default @prevDisabled">
+            Previous
+        </a>
+        <a asp-action="Index"
+           asp-route-sortName="@ViewBag.SortName"
+           asp-route-sortOrder="@ViewBag.SortOrder"
+           asp-route-pageNum="@(Model.PageIndex + 1)"
+           asp-route-keyword="@ViewBag.Keyword"
+           class="btn btn-default @nextDisabled">
+            Next
+        </a>
+    </div>
+</div>
+
