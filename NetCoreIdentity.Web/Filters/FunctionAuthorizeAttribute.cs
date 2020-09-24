@@ -16,12 +16,12 @@ namespace NetCoreIdentity.Web.Filters
     public class FunctionAuthorizeAttribute : AuthorizeAttribute, IAsyncAuthorizationFilter
     {
         private readonly UserManager<NetCoreIdentityUser> _userManager;
-        private readonly UnitOfWork<EFCoreLabContext> _unitOfWork;
+        private readonly UnitOfWork<NetCoreIdentityContext> _unitOfWork;
 
-        public FunctionAuthorizeAttribute(UserManager<NetCoreIdentityUser> userManager, IUnitOfWork unit)
+        public FunctionAuthorizeAttribute(UserManager<NetCoreIdentityUser> userManager, IUnitOfWork<NetCoreIdentityContext> unit)
         {
             _userManager = userManager;
-            _unitOfWork = (UnitOfWork<EFCoreLabContext>)unit;
+            _unitOfWork = (UnitOfWork<NetCoreIdentityContext>)unit;
         }
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {

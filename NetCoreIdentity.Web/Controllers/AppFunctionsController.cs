@@ -20,7 +20,7 @@ namespace NetCoreIdentity.Web.Controllers
         private readonly int pageSize;
         private readonly UnitOfWork<NetCoreIdentityContext> _unitOfWork;
 
-        public AppFunctionsController(IUnitOfWork unit, UserManager<NetCoreIdentityUser> userManager, RoleManager<NetCoreIdentityRole> roleManager)
+        public AppFunctionsController(IUnitOfWork<NetCoreIdentityContext> unit, UserManager<NetCoreIdentityUser> userManager, RoleManager<NetCoreIdentityRole> roleManager)
            : base(userManager, roleManager)
         {
             _unitOfWork = (UnitOfWork<NetCoreIdentityContext>)unit;
@@ -179,6 +179,21 @@ namespace NetCoreIdentity.Web.Controllers
         private bool AppFunctionExists(int id)
         {
             return _unitOfWork.GetRepository<AppFunction>().All().Any(e => e.AppFunctionId == id);
+        }
+
+        public async Task<IActionResult> MappingRoles(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var AppFunction = await _unitOfWork.GetRepository<AppFunction>().FirstOrDefaultAsync(m => m.AppFunctionId == id);
+            if (AppFunction == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_MappingRoles");
         }
     }
 }

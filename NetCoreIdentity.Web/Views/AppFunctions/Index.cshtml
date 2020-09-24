@@ -22,7 +22,6 @@
         <p>
             <a asp-action="Create" class="btn btn-03 add-btn">Create</a>
         </p>
-
         <table class="footable">
             <thead>
                 <tr>
@@ -57,12 +56,12 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ControllerName)
-                        </td>
-                       
+                        </td>                     
                         <td>
                             <a class="btn btn-03" asp-action="Edit" asp-route-id="@item.AppFunctionId">Edit</a>
                             <a class="btn btn-07" asp-action="Details" asp-route-id="@item.AppFunctionId">Details</a>
                             <a class="btn btn-02" asp-action="Delete" asp-route-id="@item.AppFunctionId">Delete</a>
+                            <a class="btn btn-07" asp-action="MappingRoles" asp-route-id="@item.AppFunctionId" data-toggle="modal" data-target="#modal-container">Mapping Roles</a>
                         </td>
                     </tr>
                 }

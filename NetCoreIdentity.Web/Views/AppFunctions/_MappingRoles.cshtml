@@ -1,0 +1,76 @@
+﻿@model List<NetCoreIdentity.Web.Models.FuncRoleMappingViewModel>
+<div class="modal-header">
+    Create Role
+</div>
+
+<div class="modal-body">
+    <div class="form-type-01 row">
+        @Html.AntiForgeryToken()
+        <div class="table-wrap">
+            <table class="footable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().Selected)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.First().RoleName)
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.CheckBoxFor(m => item.Selected)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.First().RoleName)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-04" data-dismiss="modal">Close</button>
+    <button id="rolefucsubmit" type="submit" class="btn btn-03">Save</button>
+</div>
+<script>
+    $("#rolefucsubmit").click(function () {
+        var formData = new FormData()
+        formData.append("Name", $('#Name').val());
+        formData.append("NormalizedName", $('#NormalizedName').val());
+        $.ajax({
+            method: "post",
+            url: '@Url.Action("Create")',
+            contentType: false,
+            processData: false,
+            data: formData,
+
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("X-CSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            success: function (response) {
+                if (isHTML(response)) {
+                    var modalcontent = $('#modal-container').find('.modal-content');
+                    modalcontent.empty();
+                    modalcontent.html(response);
+                }
+                else {
+                    window.location = response;
+                }
+            },
+            error: function (xhr, status, err) {
+                console.log(err);
+            }
+        });
+    });
+
+</script>

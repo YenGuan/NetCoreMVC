@@ -21,7 +21,7 @@ namespace NetCoreIdentity.Web
         private readonly int pageSize;
         private readonly UnitOfWork<EFCoreLabContext> _unitOfWork;
 
-        public CustomersController(IUnitOfWork unit, UserManager<NetCoreIdentityUser> userManager, RoleManager<NetCoreIdentityRole> roleManager)
+        public CustomersController(IUnitOfWork<EFCoreLabContext> unit, UserManager<NetCoreIdentityUser> userManager, RoleManager<NetCoreIdentityRole> roleManager)
            : base(userManager, roleManager)
         {
             _unitOfWork = (UnitOfWork<EFCoreLabContext>)unit;
