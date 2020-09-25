@@ -39,11 +39,11 @@ namespace NetCoreIdentity.Web
             {
                 options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
             });
-
-            services.AddDbContext<EFCoreLabContext>(options =>
+            //https://docs.microsoft.com/en-us/ef/core/querying/related-data/
+            services.AddDbContext<EFCoreLabContext>(options => 
                        options.UseSqlServer(Configuration.GetConnectionString("EFCoreLabContext"))).AddUnitOfWork<EFCoreLabContext>();
             services.AddDbContext<NetCoreIdentityContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("NetCoreIdentityContextConnection"))).AddUnitOfWork<NetCoreIdentityContext>();
+                      options.UseSqlServer(Configuration.GetConnectionString("NetCoreIdentityContextConnection"))).AddUnitOfWork<NetCoreIdentityContext>();
 
             //services.AddAuthorization(options =>
             //{

@@ -1,40 +1,49 @@
 ﻿@model List<NetCoreIdentity.Web.Models.FuncRoleMappingViewModel>
+@{ 
+    var i = 1;
+}
 <div class="modal-header">
     Create Role
 </div>
 
 <div class="modal-body">
-    <div class="form-type-01 row">
+    <form id="rolemappingform" class="form-type-01 row">
         @Html.AntiForgeryToken()
-        <div class="table-wrap">
-            <table class="footable">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.First().Selected)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.First().RoleName)
-                        </th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+        <div class="col-sm-12 col-md-12">
+            <div class="table-wrap">
+                @Html.HiddenFor(m=>m.First().AppFunctionId)
+                <table id="roletable" class="footable" width="100%">
+                    <thead>
                         <tr>
-                            <td>
-                                @Html.CheckBoxFor(m => item.Selected)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(model => model.First().RoleName)
-                            </td>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().Selected)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().RoleName)
+                            </th>
+
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.CheckBoxFor(m => item.Selected, new { id = $"chkrole{i}" })
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(m => item.RoleId, new { id = $"roleid{i}" })
+                                    @Html.DisplayFor(m => item.RoleName)
+                                    @{i++;}
+                                </td>
+                            </tr>
+                            
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
 
 <div class="modal-footer">
@@ -43,15 +52,24 @@
 </div>
 <script>
     $("#rolefucsubmit").click(function () {
-        var formData = new FormData()
-        formData.append("Name", $('#Name').val());
-        formData.append("NormalizedName", $('#NormalizedName').val());
+
+        var appfuncid = $('#AppFunctionId').val();
+        var formbody = [];
+        $('#roletable > tbody  > tr').each(function (index, tr) {
+
+            var row = {};
+            row.AppFunctionId = parseInt(appfuncid);
+            row.RoleId = $(tr).find('input[name="item.RoleId"]').val();
+            row.Selected = $(tr).find('input[name="item.Selected"]').prop('checked');      
+            formbody.push(row);
+        });
+
         $.ajax({
             method: "post",
-            url: '@Url.Action("Create")',
-            contentType: false,
-            processData: false,
-            data: formData,
+            url: '@Url.Action("MappingRoles")',
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            data: JSON.stringify(formbody),
 
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("X-CSRF-TOKEN",

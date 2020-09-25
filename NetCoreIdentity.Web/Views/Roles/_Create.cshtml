@@ -31,7 +31,7 @@
 </div>
 <script>
     $("#btnRoleCreate").click(function () {
-        var formData = new FormData()
+        var formData = new FormData();
         formData.append("Name", $('#Name').val());
         formData.append("NormalizedName", $('#NormalizedName').val());
         $.ajax({

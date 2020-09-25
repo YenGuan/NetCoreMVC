@@ -6,11 +6,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}
-
 <div class="page-content">
     <form class="filter-block" asp-action="Index" method="get">
         <div class="filter-field">
@@ -65,21 +60,6 @@
             </tbody>
         </table>
 
-        <a asp-action="Index"
-           asp-route-sortName="@ViewBag.SortName"
-           asp-route-sortOrder="@ViewBag.SortOrder"
-           asp-route-pageNum="@(Model.PageIndex - 1)"
-           asp-route-keyword="@ViewBag.Keyword"
-           class="btn btn-default @prevDisabled">
-            Previous
-        </a>
-        <a asp-action="Index"
-           asp-route-sortName="@ViewBag.SortName"
-           asp-route-sortOrder="@ViewBag.SortOrder"
-           asp-route-pageNum="@(Model.PageIndex + 1)"
-           asp-route-keyword="@ViewBag.Keyword"
-           class="btn btn-default @nextDisabled">
-            Next
-        </a>
+        <partial name="_PagingnationPartial" />
     </div>
 </div>

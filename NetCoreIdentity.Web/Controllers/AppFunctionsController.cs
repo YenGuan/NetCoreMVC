@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using NetCoreIdentity.Model;
 using NetCoreIdentity.Web.Areas.Identity.Data;
 using NetCoreIdentity.Web.Filters;
+using NetCoreIdentity.Web.Models;
 using NetCoreIdentity.Web.Paginations;
 
 namespace NetCoreIdentity.Web.Controllers
@@ -187,13 +188,50 @@ namespace NetCoreIdentity.Web.Controllers
             {
                 return NotFound();
             }
-            var AppFunction = await _unitOfWork.GetRepository<AppFunction>().FirstOrDefaultAsync(m => m.AppFunctionId == id);
-            if (AppFunction == null)
+            var appFunction = await _unitOfWork.GetRepository<AppFunction>().FirstOrDefaultAsync(m => m.AppFunctionId == id);
+            if (appFunction == null)
             {
                 return NotFound();
             }
-
-            return PartialView("_MappingRoles");
+            List<FuncRoleMappingViewModel> vmodel = new List<FuncRoleMappingViewModel>();
+            var roles = RoleManager.Roles.ToList();
+            var permits = _unitOfWork.GetRepository<FunctionRole>().Where(m => m.AppFunctionId == appFunction.AppFunctionId).ToList();
+            foreach (var role in roles)
+            {
+                vmodel.Add(new FuncRoleMappingViewModel()
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name,
+                    AppFunctionId = appFunction.AppFunctionId,
+                    AppFunctionName = appFunction.AppFunctionName,
+                    Selected = permits.Any(m => m.RoleId == role.Id)
+                });
+            }
+            return PartialView("_MappingRoles", vmodel);
         }
+        //[Bind("Selected,RoleId,RoleName,AppFunctionId,AppFunctionName")] 
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> MappingRoles([FromBody] List<FuncRoleMappingViewModel> model)
+        {
+            if (model == null)
+                return NotFound();
+
+            var appFunction = await _unitOfWork.GetRepository<AppFunction>().FirstOrDefaultAsync(m => m.AppFunctionId == model.First().AppFunctionId);
+            if (appFunction == null)
+                return NotFound();
+
+            var repo = _unitOfWork.GetRepository<FunctionRole>();
+            var rolefuncs = repo.Where(m => m.AppFunctionId == model.First().AppFunctionId).ToList();
+            foreach (var rolefunc in rolefuncs)
+            {
+                await repo.DeleteAsync(rolefunc);
+            }
+            var newRoles = model.Where(m => m.Selected).Select(n => new FunctionRole() { RoleId = n.RoleId, AppFunctionId = n.AppFunctionId.Value });
+            repo.CreateBatch(newRoles);
+            return Json(Url.Action("Index"));
+        }
+
+
     }
 }

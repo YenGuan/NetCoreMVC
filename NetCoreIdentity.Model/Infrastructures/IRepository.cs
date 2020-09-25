@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -48,6 +49,11 @@ namespace NetCoreIdentity.Model
         Task<List<T>> FindAllAsync();
         Task<List<T>> FindAllWithIncludeAsync(params Expression<Func<T, object>>[] includes);
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate = null,
+          Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+          Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+          bool enableTracking = true,
+          bool ignoreQueryFilters = false);
         #endregion
 
     }

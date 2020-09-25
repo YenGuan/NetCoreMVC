@@ -56,7 +56,7 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ControllerName)
-                        </td>                     
+                        </td>
                         <td>
                             <a class="btn btn-03" asp-action="Edit" asp-route-id="@item.AppFunctionId">Edit</a>
                             <a class="btn btn-07" asp-action="Details" asp-route-id="@item.AppFunctionId">Details</a>
@@ -67,27 +67,7 @@
                 }
             </tbody>
         </table>
-        @{
-            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-        }
-
-        <a asp-action="Index"
-           asp-route-sortName="@ViewBag.SortName"
-           asp-route-sortOrder="@ViewBag.SortOrder"
-           asp-route-pageNum="@(Model.PageIndex - 1)"
-           asp-route-keyword="@ViewBag.Keyword"
-           class="btn btn-default @prevDisabled">
-            Previous
-        </a>
-        <a asp-action="Index"
-           asp-route-sortName="@ViewBag.SortName"
-           asp-route-sortOrder="@ViewBag.SortOrder"
-           asp-route-pageNum="@(Model.PageIndex + 1)"
-           asp-route-keyword="@ViewBag.Keyword"
-           class="btn btn-default @nextDisabled">
-            Next
-        </a>
+        <partial name="_PagingnationPartial" />
     </div>
 </div>
 

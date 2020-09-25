@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using NetCoreIdentity.Model;
 using NetCoreIdentity.Web.Areas.Identity.Data;
 using System;
@@ -30,22 +31,23 @@ namespace NetCoreIdentity.Web.Filters
             {
                 //throw new NullReferenceException();
                 return;
-            }    
+            }
             //string actionName = descriptor.ActionName;
             //string ctrlName = descriptor.ControllerName;
             //string userId = context.HttpContext.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var repo = _unitOfWork.GetRepository<AppFunction>();
-            var function = await repo.FirstOrDefaultAsync(m => m.ControllerName == descriptor.ControllerName);
+            var funcRepo = _unitOfWork.GetRepository<AppFunction>();
+            var permitRepo = _unitOfWork.GetRepository<FunctionRole>();
+            var function = await funcRepo.FirstOrDefaultAsync(m => m.ControllerName == descriptor.ControllerName);
             if (function == null)
             {
                 context.Result = new ForbidResult();
                 return;
             }
-            var cUser = await _userManager.FindByIdAsync(context.HttpContext.User?.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var rolesHasPermit = function.FunctionRoles.Select(m => m.Role).ToList();
-            foreach (var role in rolesHasPermit)
+
+            var rolesHasPermit = permitRepo.FindAllWithInclude(m => m.Role).Where(m => m.AppFunctionId == function.AppFunctionId).AsNoTracking();
+            foreach (var role in rolesHasPermit.Select(m => m.Role).ToList())
             {
-                if (await _userManager.IsInRoleAsync(cUser, role.Name))
+                if (context.HttpContext.User.IsInRole(role.Name))
                 {
                     return;
                 }

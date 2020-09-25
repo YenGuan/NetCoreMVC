@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace NetCoreIdentity.Model
 {
@@ -72,6 +73,24 @@ namespace NetCoreIdentity.Model
         public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
             return await this._dbSet.FirstOrDefaultAsync(predicate);
+        }
+  
+        public Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate = null,
+         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+         Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, bool enableTracking = true,
+         bool ignoreQueryFilters = false)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (!enableTracking) query = query.AsNoTracking();
+
+            if (include != null) query = include(query);
+
+            if (predicate != null) query = query.Where(predicate);
+
+            if (ignoreQueryFilters) query = query.IgnoreQueryFilters();
+
+            return orderBy != null ? orderBy(query).FirstOrDefaultAsync() : query.FirstOrDefaultAsync();
         }
         public async Task<T> FindAsync(params object[] keys)
         {
