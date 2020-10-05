@@ -1,5 +1,4 @@
-﻿
-@import "theme";
+﻿@import "theme";
 
 * {
     /*font-family: 'Noto Sans TC','Microsoft JhengHei','Arial';*/
@@ -126,12 +125,9 @@ a {
     height: calc(100vh - 80px);
     flex: 1;
 
-
-
     #menu-btn {
         display: none;
     }
-
 
     .toggle-btn {
         @media screen and (min-width: 701px) {
@@ -221,8 +217,6 @@ a {
             }
         }
     }
-
-
 
     .side-menu {
         background-color: $sub_background_color;
